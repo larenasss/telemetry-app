@@ -48,15 +48,16 @@ module.exports = {
     publicPath: isDev ? '/' : './',
   },
   resolve: {
-    extensions: ['.js', '.json', '.scss'],
+    extensions: ['.js', '.json', '.scss', '.vue'],
     alias: {
       '@': PATHS.src,
     },
   },
   optimization: optimization(),
   devServer: {
-    port: 4242,
+    port: 8080,
     open: true,
+    historyApiFallback: true
   },
   devtool: isDev ? 'source-map' : false,
   plugins: [
