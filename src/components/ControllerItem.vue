@@ -6,17 +6,17 @@
     <div v-if="isController">
       <h3 class="mb-3">Отображение данных по контроллеру {{ controller.Id }}</h3>
       <div class="flex">
-        <div class="flex flex-column">
-          <div v-for="(param, idx) in params" :key="idx">
+        <router-view class="flex-1">
+        </router-view>
+        <div class="flex flex-column ml-5">
+          <div v-for="param in params" :key="param">
             <div>
-              <router-link :to="{name: 'controller/params', params: {value: idx}}">
+              <router-link :to="{name: 'controller/params', params: {id: controller.Id, key: param}}">
                 {{ param }}
               </router-link>
             </div>
           </div>
         </div>
-        <router-view>
-        </router-view>
       </div>
     </div>
     <div v-else>

@@ -2,7 +2,7 @@
   <form @submit.prevent="saveParams">
     <div v-for="(param, idx) in params" :key="idx">
       <span>{{ param }}</span>
-      <input type="checkbox" name="param" :value="param" checked>
+      <input type="checkbox" name="param" :value="param" :checked="param">
     </div>
     <Button type="submit" class="mt-3" label="Сохранить"></Button>
   </form>

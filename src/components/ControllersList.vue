@@ -8,7 +8,7 @@
           </div>
           <div class="text-900 font-medium text-xl flex align-items-center">
             <span class="mr-3">Imei: </span>
-            <router-link :to="{name: 'controller', params: {id: controller.Id}}">
+            <router-link :to="{name: 'controller/params', params: {id: controller.Id, key: controller.message[0].Id}}">
               <Button :label="controller.Id" class="p-button-raised p-button-info" />
             </router-link>
           </div>

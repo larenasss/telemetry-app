@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '@/views/HomePage';
 import SettingsPage from '@/views/SettingsPage';
 import ControllerItem from '@/components/ControllerItem';
-import ParamsValues from '@/components/ui/ParamsValues';
+import ParamsValues from '@/components/ParamsValues';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -27,10 +27,9 @@ const router = createRouter({
       component: ControllerItem,
       children: [
         {
-          path: 'params/:value',
+          path: 'params/:key',
           name: 'controller/params',
           component: ParamsValues,
-          props: true
         }
       ]
     },

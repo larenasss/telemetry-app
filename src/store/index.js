@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import defaultParamsInMessage from '@/settings/defaultParamsInMessage';
+// import defaultParamsInMessage from '@/settings/defaultParamsInMessage';
 
 
 export const mutationsTypes = {
@@ -27,7 +27,7 @@ export const store = createStore({
   },
   mutations: {
     [mutationsTypes.setControllers]: (state, payload) => {
-      state.controllers = payload.reduce((acc, messages) => {
+        const controllers = payload.reduce((acc, messages) => {
         const isSome = acc.some(ct => ct.Id === messages.Imei);
         if (!isSome) {
           const messagesForItem = payload.filter(ms => ms.Imei === messages.Imei);
@@ -39,6 +39,7 @@ export const store = createStore({
         }
         return acc;
       }, []);
+      state.controllers = controllers;
       state.loading = true;
     },
     [mutationsTypes.setParams]: (state, payload) => {
@@ -63,14 +64,14 @@ export const store = createStore({
     [gettersTypes.getControllers]: (state) => state.controllers,
     [gettersTypes.getControllerById]: (state) => id => {
       const controller = state.controllers.filter(cr => cr.Id === id)[0];
-      controller.message = controller.message.map(ms => {
+      /* controller.message = controller.message.map(ms => {
         Object.keys(ms).forEach(key => {
           if (defaultParamsInMessage.includes(key)) {
             delete ms[key];
           }
         });
         return ms;
-      });
+      }); */
 
       return controller;
     }

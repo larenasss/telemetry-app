@@ -7,6 +7,7 @@ import PrimeVue from 'primevue/config';
 import Button from 'primevue/button';
 import Menubar from 'primevue/menubar';
 import ProgressSpinner from 'primevue/progressspinner';
+import Chart from 'primevue/chart';
 
 import '@/scss/main';
 
@@ -19,5 +20,7 @@ app.component('Button', Button);
 app.component('Menubar', Menubar);
 // eslint-disable-next-line vue/multi-word-component-names
 app.component('ProgressSpinner', ProgressSpinner);
+// eslint-disable-next-line vue/multi-word-component-names
+app.component('Chart', Chart);
 
 app.mount('#app');
