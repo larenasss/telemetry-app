@@ -48,7 +48,7 @@ module.exports = {
     publicPath: isDev ? '/' : './',
   },
   resolve: {
-    extensions: ['.js', '.json', '.scss', '.vue'],
+    extensions: ['.js', '.json', '.scss', '.vue', '.ts'],
     alias: {
       '@': PATHS.src,
     },
@@ -73,6 +73,10 @@ module.exports = {
           from: path.resolve(__dirname, `${PATHS.src}/public/favicon.ico`),
           to: `${PATHS.dist}`,
         },
+        {
+          from: path.resolve(__dirname, `${PATHS.src}/dataDB/db.json`),
+          to: `${PATHS.dist}/dataDB/db.json`,
+        }
       ],
     }),
     new MiniCssExtractPlugin({

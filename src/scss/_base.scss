@@ -8,3 +8,7 @@
 a {
     text-decoration: none;
 }
+
+.router-link-exact-active, .router-link-exact-active button {
+    color: red;
+}

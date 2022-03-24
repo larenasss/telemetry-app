@@ -1,5 +1,10 @@
 <template>
-  <controllers-list :controllers="controllers"></controllers-list>
+  <div v-if="loading">
+    <ProgressSpinner animationDuration=".1s" />
+  </div>
+  <template v-else>
+    <controllers-list :controllers="controllers"></controllers-list>
+  </template>
 </template>
 
 <script>
@@ -16,12 +21,13 @@ export default {
   setup() {
     const store = useStore();
 
-    console.log(store);
-
     const controllers = computed(() => store.getters[gettersTypes.getControllers]);
 
+    const loading = computed(() => !store.state.loading);
+
     return {
-      controllers
+      controllers,
+      loading
     };
   }
 };

@@ -1,11 +1,15 @@
 import { createStore } from 'vuex';
+import defaultParamsInMessage from '@/settings/defaultParamsInMessage';
+
 
 export const mutationsTypes = {
-  setConstrollers: 'setConstrollers'
+  setControllers: 'setControllers',
+  setParams: 'setParams'
 };
 
 export const actionsTypes = {
-  loadMessages: 'loadMessages'
+  loadMessages: 'loadMessages',
+  loadControllerById: 'loadControllerById'
 };
 
 export const gettersTypes = {
@@ -16,443 +20,59 @@ export const gettersTypes = {
 export const store = createStore({
   state() {
     return {
-      constrollers: []
+      loading: false,
+      controllers: [],
+      params: [],
     };
   },
   mutations: {
-    [mutationsTypes.setConstrollers]: (store, payload) => {
-      store.constrollers = payload.reduce((acc, message) => {
-        const isSome = acc.some(ct => ct.Id === message.Imei);
+    [mutationsTypes.setControllers]: (state, payload) => {
+      state.controllers = payload.reduce((acc, messages) => {
+        const isSome = acc.some(ct => ct.Id === messages.Imei);
         if (!isSome) {
+          const messagesForItem = payload.filter(ms => ms.Imei === messages.Imei);
           acc.push({
-            Id: message.Imei,
-            TruckId: message.TruckId,
-            message: payload.filter(ms => ms.Imei === message.Imei)
+            Id: messages.Imei,
+            TruckId: messages.TruckId,
+            message: messagesForItem
           });
         }
         return acc;
       }, []);
+      state.loading = true;
+    },
+    [mutationsTypes.setParams]: (state, payload) => {
+      state.params = payload;
     }
   },
   actions: {
     [actionsTypes.loadMessages]: async({ commit }) => {
       try {
-        // const data = await fetch('http://manageband.ru/api/frontend-test.json');
-
-        const messages = [
-          {
-            "Id": 27004158,
-            "Time": "2022-02-22T10:53:40",
-            "TruckId": 1994,
-            "Imei": "861774057963462",
-            "Lat": 54.3764038,
-            "Lon": 86.67884,
-            "Speed": 0.0,
-            "Height": 280,
-            "Mileage": null,
-            "EngineOilPressure": 0,
-            "BoostPressure": null,
-            "CoolantPressure": null,
-            "InjectorRailPressure": null,
-            "EngineTemperature": 53,
-            "FuelTemperature": 0,
-            "EngineRPM": 650.0,
-            "OnboardVoltage": 28536,
-            "EngineSpeed": null,
-            "TotalMileage": 0,
-            "AcceleratorPedalPosition": 0,
-            "LoadPercentage": 0,
-            "FuelConsumption": 0,
-            "TransportSpeedOnWheels": null,
-            "SeatBeltCondition": 0,
-            "ServiceBrakePedalPosition": 0,
-            "TachographSpeed": 0,
-            "DailyMileage": null,
-            "TotalEngineRunningTime": null,
-            "DailyFuelConsumption": null,
-            "TotalFuelConsumption": 0.0,
-            "AxleLoad1": 0.0,
-            "AxleLoad2": 0.0,
-            "AxleLoad3": 0.0,
-            "AxleLoad4": 0.0,
-            "AxleLoad5": 0.0,
-            "OilTemperature": -273.0,
-            "InstantOilConsumption": null,
-            "FuelLevel": 73.6
-          },
-          {
-            "Id": 27006463,
-            "Time": "2022-02-22T11:10:20",
-            "TruckId": 1994,
-            "Imei": "861774057963462",
-            "Lat": 54.3764038,
-            "Lon": 86.67884,
-            "Speed": 0.0,
-            "Height": 280,
-            "Mileage": null,
-            "EngineOilPressure": 0,
-            "BoostPressure": null,
-            "CoolantPressure": null,
-            "InjectorRailPressure": null,
-            "EngineTemperature": 59,
-            "FuelTemperature": 0,
-            "EngineRPM": 651.0,
-            "OnboardVoltage": 28199,
-            "EngineSpeed": null,
-            "TotalMileage": 0,
-            "AcceleratorPedalPosition": 0,
-            "LoadPercentage": 0,
-            "FuelConsumption": 0,
-            "TransportSpeedOnWheels": null,
-            "SeatBeltCondition": 0,
-            "ServiceBrakePedalPosition": 0,
-            "TachographSpeed": 0,
-            "DailyMileage": null,
-            "TotalEngineRunningTime": null,
-            "DailyFuelConsumption": null,
-            "TotalFuelConsumption": 0.0,
-            "AxleLoad1": 0.0,
-            "AxleLoad2": 0.0,
-            "AxleLoad3": 0.0,
-            "AxleLoad4": 0.0,
-            "AxleLoad5": 0.0,
-            "OilTemperature": -273.0,
-            "InstantOilConsumption": null,
-            "FuelLevel": 73.200005
-          },
-          {
-            "Id": 27007366,
-            "Time": "2022-02-22T11:16:51",
-            "TruckId": 1994,
-            "Imei": "861774057963462",
-            "Lat": 54.38014,
-            "Lon": 86.6900558,
-            "Speed": 63.7,
-            "Height": 263,
-            "Mileage": null,
-            "EngineOilPressure": 0,
-            "BoostPressure": null,
-            "CoolantPressure": null,
-            "InjectorRailPressure": null,
-            "EngineTemperature": 70,
-            "FuelTemperature": 0,
-            "EngineRPM": 1587.0,
-            "OnboardVoltage": 28179,
-            "EngineSpeed": null,
-            "TotalMileage": 0,
-            "AcceleratorPedalPosition": 0,
-            "LoadPercentage": 0,
-            "FuelConsumption": 0,
-            "TransportSpeedOnWheels": null,
-            "SeatBeltCondition": 0,
-            "ServiceBrakePedalPosition": 0,
-            "TachographSpeed": 0,
-            "DailyMileage": null,
-            "TotalEngineRunningTime": null,
-            "DailyFuelConsumption": null,
-            "TotalFuelConsumption": 0.0,
-            "AxleLoad1": 0.0,
-            "AxleLoad2": 0.0,
-            "AxleLoad3": 0.0,
-            "AxleLoad4": 0.0,
-            "AxleLoad5": 0.0,
-            "OilTemperature": -273.0,
-            "InstantOilConsumption": null,
-            "FuelLevel": 73.200005
-          },
-          {
-            "Id": 27009188,
-            "Time": "2022-02-22T11:30:34",
-            "TruckId": 1994,
-            "Imei": "861774057963462",
-            "Lat": 54.39083,
-            "Lon": 86.70272,
-            "Speed": 15.0,
-            "Height": 259,
-            "Mileage": null,
-            "EngineOilPressure": 0,
-            "BoostPressure": null,
-            "CoolantPressure": null,
-            "InjectorRailPressure": null,
-            "EngineTemperature": 76,
-            "FuelTemperature": 0,
-            "EngineRPM": 650.0,
-            "OnboardVoltage": 28129,
-            "EngineSpeed": null,
-            "TotalMileage": 0,
-            "AcceleratorPedalPosition": 0,
-            "LoadPercentage": 0,
-            "FuelConsumption": 0,
-            "TransportSpeedOnWheels": null,
-            "SeatBeltCondition": 0,
-            "ServiceBrakePedalPosition": 0,
-            "TachographSpeed": 0,
-            "DailyMileage": null,
-            "TotalEngineRunningTime": null,
-            "DailyFuelConsumption": null,
-            "TotalFuelConsumption": 0.0,
-            "AxleLoad1": 0.0,
-            "AxleLoad2": 0.0,
-            "AxleLoad3": 0.0,
-            "AxleLoad4": 0.0,
-            "AxleLoad5": 0.0,
-            "OilTemperature": -273.0,
-            "InstantOilConsumption": null,
-            "FuelLevel": 73.200005
-          },
-          {
-            "Id": 27010723,
-            "Time": "2022-02-22T11:41:53",
-            "TruckId": 1994,
-            "Imei": "861774057963462",
-            "Lat": 54.3511047,
-            "Lon": 86.7145157,
-            "Speed": 24.8,
-            "Height": 223,
-            "Mileage": null,
-            "EngineOilPressure": 0,
-            "BoostPressure": null,
-            "CoolantPressure": null,
-            "InjectorRailPressure": null,
-            "EngineTemperature": 85,
-            "FuelTemperature": 0,
-            "EngineRPM": 650.0,
-            "OnboardVoltage": 28151,
-            "EngineSpeed": null,
-            "TotalMileage": 0,
-            "AcceleratorPedalPosition": 0,
-            "LoadPercentage": 0,
-            "FuelConsumption": 0,
-            "TransportSpeedOnWheels": null,
-            "SeatBeltCondition": 0,
-            "ServiceBrakePedalPosition": 0,
-            "TachographSpeed": 0,
-            "DailyMileage": null,
-            "TotalEngineRunningTime": null,
-            "DailyFuelConsumption": null,
-            "TotalFuelConsumption": 0.0,
-            "AxleLoad1": 0.0,
-            "AxleLoad2": 0.0,
-            "AxleLoad3": 0.0,
-            "AxleLoad4": 0.0,
-            "AxleLoad5": 0.0,
-            "OilTemperature": -273.0,
-            "InstantOilConsumption": null,
-            "FuelLevel": 66.8
-          },
-          {
-            "Id": 27012270,
-            "Time": "2022-02-22T11:54:26",
-            "TruckId": 1994,
-            "Imei": "861774057963462",
-            "Lat": 54.35187,
-            "Lon": 86.70285,
-            "Speed": 0.0,
-            "Height": 216,
-            "Mileage": null,
-            "EngineOilPressure": 0,
-            "BoostPressure": null,
-            "CoolantPressure": null,
-            "InjectorRailPressure": null,
-            "EngineTemperature": 84,
-            "FuelTemperature": 0,
-            "EngineRPM": 650.0,
-            "OnboardVoltage": 28096,
-            "EngineSpeed": null,
-            "TotalMileage": 0,
-            "AcceleratorPedalPosition": 0,
-            "LoadPercentage": 0,
-            "FuelConsumption": 0,
-            "TransportSpeedOnWheels": null,
-            "SeatBeltCondition": 0,
-            "ServiceBrakePedalPosition": 0,
-            "TachographSpeed": 0,
-            "DailyMileage": null,
-            "TotalEngineRunningTime": null,
-            "DailyFuelConsumption": null,
-            "TotalFuelConsumption": 0.0,
-            "AxleLoad1": 0.0,
-            "AxleLoad2": 0.0,
-            "AxleLoad3": 0.0,
-            "AxleLoad4": 0.0,
-            "AxleLoad5": 0.0,
-            "OilTemperature": -273.0,
-            "InstantOilConsumption": null,
-            "FuelLevel": 68.0
-          },
-          {
-            "Id": 27013741,
-            "Time": "2022-02-22T12:06:57",
-            "TruckId": 1994,
-            "Imei": "861774057963462",
-            "Lat": 54.3680954,
-            "Lon": 86.56761,
-            "Speed": 67.5,
-            "Height": 251,
-            "Mileage": null,
-            "EngineOilPressure": 0,
-            "BoostPressure": null,
-            "CoolantPressure": null,
-            "InjectorRailPressure": null,
-            "EngineTemperature": 89,
-            "FuelTemperature": 0,
-            "EngineRPM": 1502.0,
-            "OnboardVoltage": 28158,
-            "EngineSpeed": null,
-            "TotalMileage": 0,
-            "AcceleratorPedalPosition": 0,
-            "LoadPercentage": 0,
-            "FuelConsumption": 0,
-            "TransportSpeedOnWheels": null,
-            "SeatBeltCondition": 0,
-            "ServiceBrakePedalPosition": 0,
-            "TachographSpeed": 0,
-            "DailyMileage": null,
-            "TotalEngineRunningTime": null,
-            "DailyFuelConsumption": null,
-            "TotalFuelConsumption": 0.0,
-            "AxleLoad1": 0.0,
-            "AxleLoad2": 0.0,
-            "AxleLoad3": 0.0,
-            "AxleLoad4": 0.0,
-            "AxleLoad5": 0.0,
-            "OilTemperature": -273.0,
-            "InstantOilConsumption": null,
-            "FuelLevel": 68.4
-          },
-          {
-            "Id": 27015126,
-            "Time": "2022-02-22T12:20:13",
-            "TruckId": 1994,
-            "Imei": "861774057963462",
-            "Lat": 54.4360657,
-            "Lon": 86.41243,
-            "Speed": 79.2,
-            "Height": 211,
-            "Mileage": null,
-            "EngineOilPressure": 0,
-            "BoostPressure": null,
-            "CoolantPressure": null,
-            "InjectorRailPressure": null,
-            "EngineTemperature": 87,
-            "FuelTemperature": 0,
-            "EngineRPM": 1334.0,
-            "OnboardVoltage": 28033,
-            "EngineSpeed": null,
-            "TotalMileage": 0,
-            "AcceleratorPedalPosition": 0,
-            "LoadPercentage": 0,
-            "FuelConsumption": 0,
-            "TransportSpeedOnWheels": null,
-            "SeatBeltCondition": 0,
-            "ServiceBrakePedalPosition": 0,
-            "TachographSpeed": 0,
-            "DailyMileage": null,
-            "TotalEngineRunningTime": null,
-            "DailyFuelConsumption": null,
-            "TotalFuelConsumption": 0.0,
-            "AxleLoad1": 0.0,
-            "AxleLoad2": 0.0,
-            "AxleLoad3": 0.0,
-            "AxleLoad4": 0.0,
-            "AxleLoad5": 0.0,
-            "OilTemperature": -273.0,
-            "InstantOilConsumption": null,
-            "FuelLevel": 62.0
-          },
-          {
-            "Id": 27016388,
-            "Time": "2022-02-22T12:29:39",
-            "TruckId": 1994,
-            "Imei": "861774057963462",
-            "Lat": 54.49102,
-            "Lon": 86.36296,
-            "Speed": 40.9,
-            "Height": 192,
-            "Mileage": null,
-            "EngineOilPressure": 0,
-            "BoostPressure": null,
-            "CoolantPressure": null,
-            "InjectorRailPressure": null,
-            "EngineTemperature": 91,
-            "FuelTemperature": 0,
-            "EngineRPM": 1355.0,
-            "OnboardVoltage": 28100,
-            "EngineSpeed": null,
-            "TotalMileage": 0,
-            "AcceleratorPedalPosition": 0,
-            "LoadPercentage": 0,
-            "FuelConsumption": 0,
-            "TransportSpeedOnWheels": null,
-            "SeatBeltCondition": 0,
-            "ServiceBrakePedalPosition": 0,
-            "TachographSpeed": 0,
-            "DailyMileage": null,
-            "TotalEngineRunningTime": null,
-            "DailyFuelConsumption": null,
-            "TotalFuelConsumption": 0.0,
-            "AxleLoad1": 0.0,
-            "AxleLoad2": 0.0,
-            "AxleLoad3": 0.0,
-            "AxleLoad4": 0.0,
-            "AxleLoad5": 0.0,
-            "OilTemperature": -273.0,
-            "InstantOilConsumption": null,
-            "FuelLevel": 61.600002
-          },
-          {
-            "Id": 27016388,
-            "Time": "2022-02-22T12:29:39",
-            "TruckId": 1994,
-            "Imei": "861774057963461",
-            "Lat": 54.49102,
-            "Lon": 86.36296,
-            "Speed": 40.9,
-            "Height": 192,
-            "Mileage": null,
-            "EngineOilPressure": 0,
-            "BoostPressure": null,
-            "CoolantPressure": null,
-            "InjectorRailPressure": null,
-            "EngineTemperature": 91,
-            "FuelTemperature": 0,
-            "EngineRPM": 1355.0,
-            "OnboardVoltage": 28100,
-            "EngineSpeed": null,
-            "TotalMileage": 0,
-            "AcceleratorPedalPosition": 0,
-            "LoadPercentage": 0,
-            "FuelConsumption": 0,
-            "TransportSpeedOnWheels": null,
-            "SeatBeltCondition": 0,
-            "ServiceBrakePedalPosition": 0,
-            "TachographSpeed": 0,
-            "DailyMileage": null,
-            "TotalEngineRunningTime": null,
-            "DailyFuelConsumption": null,
-            "TotalFuelConsumption": 0.0,
-            "AxleLoad1": 0.0,
-            "AxleLoad2": 0.0,
-            "AxleLoad3": 0.0,
-            "AxleLoad4": 0.0,
-            "AxleLoad5": 0.0,
-            "OilTemperature": -273.0,
-            "InstantOilConsumption": null,
-            "FuelLevel": 61.600002
-          }
-        ];
-
-        commit(mutationsTypes.setConstrollers, messages);
+        const data = await fetch('/dataDB/db.json');
+        data.json().then(messages => {
+          const arrayParams = Object.keys(messages[0]).map(el => el);
+          commit(mutationsTypes.setParams, arrayParams);
+          commit(mutationsTypes.setControllers, messages);
+        });
       } catch (e) {
         console.log(e);
       }
-    }
+    },
   },
   getters: {
-    [gettersTypes.getControllers]: ({ constrollers }) => constrollers,
-    [gettersTypes.getControllerById]: ({ constrollers }) => id => {
-      console.log(constrollers, id);
-      return constrollers.filter(ct => ct.Id === id);
+    [gettersTypes.getControllers]: (state) => state.controllers,
+    [gettersTypes.getControllerById]: (state) => id => {
+      const controller = state.controllers.filter(cr => cr.Id === id)[0];
+      controller.message = controller.message.map(ms => {
+        Object.keys(ms).forEach(key => {
+          if (defaultParamsInMessage.includes(key)) {
+            delete ms[key];
+          }
+        });
+        return ms;
+      });
+
+      return controller;
     }
   }
 });
