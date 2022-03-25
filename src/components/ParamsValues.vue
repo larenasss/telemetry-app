@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-column">
-     <div class="card">
-        <Chart type="bar" :data="basicData" :options="basicOptions" />
+    <div class="card">
+      <Chart type="bar" :data="basicData" :options="basicOptions" />
     </div>
   </div>
 </template>
@@ -18,15 +18,15 @@ export default {
     const store = useStore();
     const route = useRoute();
 
-    const message = computed(() => store.getters[gettersTypes.getControllerById](route.params.id).message);
+    const messages = computed(() => store.getters[gettersTypes.getControllerById](route.params.id).messages);
 
     const basicData = ref({
-      labels: [...message.value.map(ms => ms.Time)],
+      labels: [...messages.value.map(ms => ms.Time)],
       datasets: [
         {
           label: 'График по времени',
           backgroundColor: '#42A5F5',
-          data: [...message.value.map(ms => ms[route.params.key] ?? 100)]
+          data: [...messages.value.map(ms => ms[route.query.pv] ?? 100)]
         },
       ]
     });
@@ -62,9 +62,9 @@ export default {
   );
 
     return {
-      message,
+      messages,
       basicData,
-      basicOptions
+      basicOptions,
     };
   }
 };

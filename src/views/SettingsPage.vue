@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="saveParams">
     <div v-for="(param, idx) in params" :key="idx">
-      <span>{{ param }}</span>
+      <span class="mr-5">{{ param }}</span>
       <input type="checkbox" name="param" :value="param" :checked="param">
     </div>
     <Button type="submit" class="mt-3" label="Сохранить"></Button>
@@ -12,6 +12,7 @@
 import { useStore } from 'vuex';
 import { mutationsTypes } from '@/store';
 import { computed } from '@vue/reactivity';
+import { setItem } from '@/helpers/persistanceStorage';
 
 export default {
   name: 'AppSettinsPage',
@@ -23,17 +24,26 @@ export default {
       const inputs = form.elements.param;
       if (!inputs) return;
 
-      const arrayValues = [];
+      const arrayValuesChecked = [];
+      const arrayValuesNonChecked = [];
       inputs.forEach(element => {
-        if (!element.checked) return;
         const { value } = element;
-        arrayValues.push(value);
+        if (element.checked) {
+          arrayValuesNonChecked.push(value);
+        } else {
+          arrayValuesChecked.push(value);
+        }
       });
-      store.commit(mutationsTypes.setParams, arrayValues);
+
+      if (arrayValuesNonChecked.length) {
+        setItem('hideParamsSetting', arrayValuesNonChecked);
+      }
+
+      store.commit(mutationsTypes.setParamsSetting, arrayValuesChecked);
     };
 
     return {
-      params: computed(() => store.state.params),
+      params: computed(() => store.state.paramsSetting),
       saveParams
     };
   }

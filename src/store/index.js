@@ -1,10 +1,12 @@
 import { createStore } from 'vuex';
-// import defaultParamsInMessage from '@/settings/defaultParamsInMessage';
-
+import { defaultHideParamsSetting } from '@/settings/defaultHideParamsSetting';
+import { createNewArrayParams } from '@/helpers/createNewArrayParams';
+import { getItem } from '../helpers/persistanceStorage';
+// import { getItem } from '@/helpers/persistanceStorage';
 
 export const mutationsTypes = {
   setControllers: 'setControllers',
-  setParams: 'setParams'
+  setParamsSetting: 'setParamsSetting'
 };
 
 export const actionsTypes = {
@@ -14,7 +16,9 @@ export const actionsTypes = {
 
 export const gettersTypes = {
   getControllers: 'getControllers',
-  getControllerById: 'getControllerById'
+  getControllersForUI: 'getControllersForUI',
+  getControllerById: 'getControllerById',
+  getParamsSetting: 'getParamsSetting'
 };
 
 export const store = createStore({
@@ -22,7 +26,7 @@ export const store = createStore({
     return {
       loading: false,
       controllers: [],
-      params: [],
+      paramsSetting: [],
     };
   },
   mutations: {
@@ -34,7 +38,7 @@ export const store = createStore({
           acc.push({
             Id: messages.Imei,
             TruckId: messages.TruckId,
-            message: messagesForItem
+            messages: messagesForItem
           });
         }
         return acc;
@@ -42,8 +46,8 @@ export const store = createStore({
       state.controllers = controllers;
       state.loading = true;
     },
-    [mutationsTypes.setParams]: (state, payload) => {
-      state.params = payload;
+    [mutationsTypes.setParamsSetting]: (state, payload) => {
+      state.paramsSetting = payload;
     }
   },
   actions: {
@@ -52,7 +56,7 @@ export const store = createStore({
         const data = await fetch('/dataDB/db.json');
         data.json().then(messages => {
           const arrayParams = Object.keys(messages[0]).map(el => el);
-          commit(mutationsTypes.setParams, arrayParams);
+          commit(mutationsTypes.setParamsSetting, createNewArrayParams(arrayParams, [...defaultHideParamsSetting, ...getItem('hideParamsSetting') ?? ""]));
           commit(mutationsTypes.setControllers, messages);
         });
       } catch (e) {
@@ -62,18 +66,17 @@ export const store = createStore({
   },
   getters: {
     [gettersTypes.getControllers]: (state) => state.controllers,
+    [gettersTypes.getControllersForUI]: (state) => {
+      return state.controllers.map(ctr => {
+        return {
+          Id: ctr.Id,
+          TruckId: ctr.TruckId,
+        };
+      });
+    },
     [gettersTypes.getControllerById]: (state) => id => {
       const controller = state.controllers.filter(cr => cr.Id === id)[0];
-      /* controller.message = controller.message.map(ms => {
-        Object.keys(ms).forEach(key => {
-          if (defaultParamsInMessage.includes(key)) {
-            delete ms[key];
-          }
-        });
-        return ms;
-      }); */
-
       return controller;
-    }
+    },
   }
 });

@@ -21,7 +21,7 @@ export default {
   setup() {
     const store = useStore();
 
-    const controllers = computed(() => store.getters[gettersTypes.getControllers]);
+    const controllers = computed(() => store.getters[gettersTypes.getControllersForUI]);
 
     const loading = computed(() => !store.state.loading);
 

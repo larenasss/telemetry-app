@@ -27,9 +27,10 @@ const router = createRouter({
       component: ControllerItem,
       children: [
         {
-          path: 'params/:key',
+          path: 'params/',
           name: 'controller/params',
           component: ParamsValues,
+          props: route => ({ query: route.query.pv })
         }
       ]
     },

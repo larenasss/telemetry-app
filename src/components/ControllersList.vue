@@ -8,7 +8,7 @@
           </div>
           <div class="text-900 font-medium text-xl flex align-items-center">
             <span class="mr-3">Imei: </span>
-            <router-link :to="{name: 'controller/params', params: {id: controller.Id, key: controller.message[0].Id}}">
+            <router-link :to="{name: 'controller/params', params: {id: controller.Id}, query: {pv: selectParam}}">
               <Button :label="controller.Id" class="p-button-raised p-button-info" />
             </router-link>
           </div>
@@ -18,16 +18,29 @@
 </template>
 
 <script>
+import { computed } from '@vue/reactivity';
+import { useStore } from 'vuex';
 export default {
   props: {
     controllers: {
       type: Array,
       requered: true
     }
+  },
+  setup() {
+    const store = useStore();
+
+    const firstReturnParams = (obj) => {
+      for (const key in obj) {
+        return obj[key];
+      }
+    };
+
+    const selectParam = computed(() => firstReturnParams(store.state.paramsSetting));
+
+    return {
+      selectParam
+    };
   }
 };
 </script>
-
-<style>
-
-</style>
