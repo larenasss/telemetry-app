@@ -8,6 +8,7 @@ import Button from 'primevue/button';
 import Menubar from 'primevue/menubar';
 import ProgressSpinner from 'primevue/progressspinner';
 import Calendar from 'primevue/calendar';
+import Checkbox from 'primevue/checkbox';
 import Chart from 'primevue/chart';
 
 import '@/scss/main';
@@ -25,5 +26,7 @@ app.component('ProgressSpinner', ProgressSpinner);
 app.component('Chart', Chart);
 // eslint-disable-next-line vue/multi-word-component-names
 app.component('Calendar', Calendar);
+// eslint-disable-next-line vue/multi-word-component-names
+app.component('Checkbox', Checkbox);
 
 app.mount('#app');

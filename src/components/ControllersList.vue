@@ -12,7 +12,7 @@
               :to="{
                 name: 'controller/params',
                 params: {id: controller.Id},
-                query: {selectParam: selectParam, dateStart: startFilterValue, dateEnd: endFilterValue }
+                query: {selectParam: firstDefaultParam, dateStart: startFilterValue, dateEnd: endFilterValue }
               }">
               <Button :label="controller.Id" class="p-button-raised p-button-info" />
             </router-link>
@@ -25,6 +25,9 @@
 <script>
 import { computed } from '@vue/reactivity';
 import { useStore } from 'vuex';
+
+import { convertDateToJson } from '@/helpers/dateConverter';
+
 export default {
   props: {
     controllers: {
@@ -39,12 +42,12 @@ export default {
     const endFilterValue = new Date();
     startFilterValue.setDate(startFilterValue.getDate() - 1);
 
-    const selectParam = computed(() => store.state.paramsSetting.filter(ps => ps.isShow)[0]?.showValue ?? "");
+    const firstDefaultParam = computed(() => store.state.paramsSetting.filter(ps => ps.isShow)[0]?.showValue ?? "");
 
     return {
-      selectParam,
-      startFilterValue,
-      endFilterValue,
+      firstDefaultParam,
+      startFilterValue: convertDateToJson(startFilterValue),
+      endFilterValue: convertDateToJson(endFilterValue),
     };
   }
 };

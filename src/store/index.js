@@ -1,8 +1,6 @@
 import { createStore } from 'vuex';
-import { defaultHideParamsSetting } from '@/settings/defaultHideParamsSetting';
 import { createNewArrayParams } from '@/helpers/createNewArrayParams';
-import { getItem } from '../helpers/persistanceStorage';
-// import { getItem } from '@/helpers/persistanceStorage';
+import { getItem } from '@/helpers/persistanceStorage';
 
 export const mutationsTypes = {
   setControllers: 'setControllers',
@@ -47,7 +45,7 @@ export const store = createStore({
       state.loading = true;
     },
     [mutationsTypes.setParamsSetting]: (state, payload) => {
-      state.paramsSetting = createNewArrayParams(payload, [...defaultHideParamsSetting, ...getItem('hideParamsSetting')]);
+      state.paramsSetting = createNewArrayParams(payload, [...getItem('hideParamsSetting') ?? ""]);
     }
   },
   actions: {

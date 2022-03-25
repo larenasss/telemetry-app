@@ -53,6 +53,8 @@ import DateFilter from '@/components/DateFilter';
 import { useRouter, useRoute } from 'vue-router';
 import { watch } from 'vue';
 
+import { convertDateJsonToDate } from '@/helpers/dateConverter';
+
 export default {
   props: {
     id: {
@@ -65,8 +67,8 @@ export default {
     const router = useRouter();
     const route = useRoute();
     const filter = ref({
-      dateStart: new Date(route.query.dateStart),
-      dateEnd: new Date(route.query.dateEnd)
+      dateStart: convertDateJsonToDate(route.query.dateStart),
+      dateEnd: convertDateJsonToDate(route.query.dateEnd)
     });
 
     const controller = computed(() => {
@@ -81,7 +83,7 @@ export default {
     watch(filter, (nValue) => {
       router.push({
         push: `${router.currentRoute.value.fullPath}`,
-        query: { dateStart: nValue.dateStart, dateEnd: nValue.dateEnd }
+        query: { selectParam: route.query.selectParam, dateStart: nValue.dateStart, dateEnd: nValue.dateEnd }
       });
     });
 

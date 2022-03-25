@@ -1,9 +1,15 @@
+import { defaultHideParamsSetting } from '@/settings/defaultHideParamsSetting';
+
 export function createNewArrayParams(arrayParamsAll, arrayStringFieldsHide) {
   const sortArray = arrayParamsAll.sort();
   const result = sortArray.map(param => {
     const resultObj = {
       showValue: param,
     };
+
+    if (defaultHideParamsSetting.includes(param)) {
+      return;
+    }
 
     if (arrayStringFieldsHide.includes(param)) {
       resultObj.isShow = false;
@@ -14,5 +20,5 @@ export function createNewArrayParams(arrayParamsAll, arrayStringFieldsHide) {
     return resultObj;
   });
 
-  return result;
+  return result.filter(res => typeof res != 'undefined');
 }
