@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-column">
     <div class="card">
-      <Chart type="bar" :data="basicData" :options="basicOptions" />
+      <Chart type="bar" :data="chartData" :options="horizontaChartlOptions" :height="messagesLength * 3"/>
     </div>
   </div>
 </template>
@@ -19,8 +19,9 @@ export default {
     const route = useRoute();
 
     const messages = computed(() => store.getters[gettersTypes.getControllerById](route.params.id).messages);
+    const messagesLength = computed(() => messages.value.map(ms => ms.Time).length);
 
-    const basicData = ref({
+    const chartData = ref({
       labels: [...messages.value.map(ms => ms.Time)],
       datasets: [
         {
@@ -31,40 +32,43 @@ export default {
       ]
     });
 
-    const basicOptions = ref(
+    const horizontaChartlOptions = ref(
       {
-          plugins: {
-              legend: {
-                  labels: {
-                      color: '#495057'
-                  }
-              }
-          },
-          scales: {
-              x: {
-                  ticks: {
-                      color: '#495057'
-                  },
-                  grid: {
-                      color: '#ebedef'
-                  }
-              },
-              y: {
-                  ticks: {
-                      color: '#495057'
-                  },
-                  grid: {
-                      color: '#ebedef'
-                  }
-              }
+        indexAxis: 'y',
+        plugins: {
+          legend: {
+            labels: {
+              color: '#495057'
+            }
           }
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: '#495057'
+            },
+            grid: {
+              color: '#ebedef'
+            }
+          },
+          y: {
+            ticks: {
+              color: '#495057',
+              maxTicksLimit: messagesLength
+            },
+            grid: {
+              color: '#ebedef'
+            }
+          }
+        }
       }
-  );
+    );
 
     return {
       messages,
-      basicData,
-      basicOptions,
+      chartData,
+      horizontaChartlOptions,
+      messagesLength
     };
   }
 };
