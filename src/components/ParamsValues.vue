@@ -19,8 +19,8 @@ export default {
     const route = useRoute();
 
     const messages = computed(() => {
-      const dateStart = new Date(route.query.fstart);
-      const dateEnd = new Date(route.query.fend);
+      const dateStart = new Date(route.query.dateStart);
+      const dateEnd = new Date(route.query.dateEnd);
 
       const filterMessage = store.getters[gettersTypes.getControllerById](route.params.id).messages.filter(ms => {
         const dateMs = new Date(ms.Time);
@@ -39,7 +39,7 @@ export default {
         {
           label: 'График по времени',
           backgroundColor: '#42A5F5',
-          data: [...messages.value.map(ms => ms[route.query.pv] ?? 100)]
+          data: [...messages.value.map(ms => ms[route.query.selectParam] ?? 100)]
         },
       ]
     });

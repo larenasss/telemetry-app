@@ -19,7 +19,7 @@
                   :to="{
                     name: 'controller/params',
                     params: {id: controller.Id},
-                    query: {pv: ps.showValue, fstart: $route.query.fstart, fend: $route.query.fend}
+                    query: {selectParam: ps.showValue, dateStart: $route.query.dateStart, dateEnd: $route.query.dateEnd}
                   }"
                   custom v-slot="{navigate, isActive}">
                   <Button
@@ -65,8 +65,8 @@ export default {
     const router = useRouter();
     const route = useRoute();
     const filter = ref({
-      dateStart: new Date(route.query.fstart),
-      dateFinish: new Date(route.query.fend)
+      dateStart: new Date(route.query.dateStart),
+      dateEnd: new Date(route.query.dateEnd)
     });
 
     const controller = computed(() => {
@@ -81,7 +81,7 @@ export default {
     watch(filter, (nValue) => {
       router.push({
         push: `${router.currentRoute.value.fullPath}`,
-        query: { fstart: nValue.dateStart, fend: nValue.dateFinish }
+        query: { dateStart: nValue.dateStart, dateEnd: nValue.dateEnd }
       });
     });
 

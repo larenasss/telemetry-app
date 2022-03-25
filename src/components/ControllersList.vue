@@ -12,7 +12,7 @@
               :to="{
                 name: 'controller/params',
                 params: {id: controller.Id},
-                query: {pv: selectParam, fstart: startFilterValue, fend: endFilterValue }
+                query: {selectParam: selectParam, dateStart: startFilterValue, dateEnd: endFilterValue }
               }">
               <Button :label="controller.Id" class="p-button-raised p-button-info" />
             </router-link>
