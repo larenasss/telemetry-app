@@ -47,7 +47,7 @@ export const store = createStore({
       state.loading = true;
     },
     [mutationsTypes.setParamsSetting]: (state, payload) => {
-      state.paramsSetting = payload;
+      state.paramsSetting = createNewArrayParams(payload, [...defaultHideParamsSetting, ...getItem('hideParamsSetting')]);
     }
   },
   actions: {
@@ -56,7 +56,7 @@ export const store = createStore({
         const data = await fetch('/dataDB/db.json');
         data.json().then(messages => {
           const arrayParams = Object.keys(messages[0]).map(el => el);
-          commit(mutationsTypes.setParamsSetting, createNewArrayParams(arrayParams, [...defaultHideParamsSetting, ...getItem('hideParamsSetting') ?? ""]));
+          commit(mutationsTypes.setParamsSetting, arrayParams);
           commit(mutationsTypes.setControllers, messages);
         });
       } catch (e) {

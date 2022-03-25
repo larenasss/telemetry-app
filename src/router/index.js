@@ -30,7 +30,6 @@ const router = createRouter({
           path: 'params/',
           name: 'controller/params',
           component: ParamsValues,
-          props: route => ({ query: route.query.pv })
         }
       ]
     },

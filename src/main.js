@@ -7,6 +7,7 @@ import PrimeVue from 'primevue/config';
 import Button from 'primevue/button';
 import Menubar from 'primevue/menubar';
 import ProgressSpinner from 'primevue/progressspinner';
+import Calendar from 'primevue/calendar';
 import Chart from 'primevue/chart';
 
 import '@/scss/main';
@@ -22,5 +23,7 @@ app.component('Menubar', Menubar);
 app.component('ProgressSpinner', ProgressSpinner);
 // eslint-disable-next-line vue/multi-word-component-names
 app.component('Chart', Chart);
+// eslint-disable-next-line vue/multi-word-component-names
+app.component('Calendar', Calendar);
 
 app.mount('#app');

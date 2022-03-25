@@ -8,7 +8,12 @@
           </div>
           <div class="text-900 font-medium text-xl flex align-items-center">
             <span class="mr-3">Imei: </span>
-            <router-link :to="{name: 'controller/params', params: {id: controller.Id}, query: {pv: selectParam}}">
+            <router-link
+              :to="{
+                name: 'controller/params',
+                params: {id: controller.Id},
+                query: {pv: selectParam, fstart: startFilterValue, fend: endFilterValue }
+              }">
               <Button :label="controller.Id" class="p-button-raised p-button-info" />
             </router-link>
           </div>
@@ -30,16 +35,16 @@ export default {
   setup() {
     const store = useStore();
 
-    const firstReturnParams = (obj) => {
-      for (const key in obj) {
-        return obj[key];
-      }
-    };
+    const startFilterValue = new Date();
+    const endFilterValue = new Date();
+    startFilterValue.setDate(startFilterValue.getDate() - 1);
 
-    const selectParam = computed(() => firstReturnParams(store.state.paramsSetting));
+    const selectParam = computed(() => store.state.paramsSetting.filter(ps => ps.isShow)[0]?.showValue ?? "");
 
     return {
-      selectParam
+      selectParam,
+      startFilterValue,
+      endFilterValue,
     };
   }
 };
