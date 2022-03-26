@@ -46,7 +46,7 @@ module.exports = {
   output: {
     filename: filename('js'),
     path: PATHS.dist,
-    publicPath: isDev ? '/' : './',
+    publicPath: '/',
   },
   resolve: {
     extensions: ['.js', '.json', '.scss', '.vue'],
