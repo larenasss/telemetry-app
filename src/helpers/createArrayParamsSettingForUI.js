@@ -1,6 +1,6 @@
 import { defaultHideParamsSetting } from '@/settings/defaultHideParamsSetting';
 
-export function createNewArrayParams(arrayParamsAll, arrayStringFieldsHide) {
+export function createArrayParamsSettingForUI(arrayParamsAll, arrayStringFieldsHide) {
   const sortArray = arrayParamsAll.sort();
   const result = sortArray.map(param => {
     const resultObj = {

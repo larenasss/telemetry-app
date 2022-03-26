@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-column">
     <div class="card">
-      <Chart type="bar" :data="chartData" :options="horizontaChartlOptions" :height="messagesLength > 50 ? messagesLength * 4 : messagesLength * 10"/>
+      <Chart type="bar" :data="chartData" :options="horizontaChartlOptions" :height="messagesLength > 50 ? messagesLength * 4 : messagesLength * 8"/>
     </div>
   </div>
 </template>
@@ -33,7 +33,9 @@ export default {
     });
 
     const chartLabel = computed(() => {
-      return messages.value.length ? "Данные за заданный промежуток времени" : 'Данных за заданный промежуток времени нет';
+      return messages.value.length
+        ? "Данные за заданный промежуток времени"
+        : 'Данных за заданный промежуток времени нет';
     });
 
     const messagesLength = computed(() => messages.value.map(ms => ms.Time).length);

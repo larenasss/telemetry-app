@@ -1,6 +1,6 @@
 <template>
   <div v-if="loading">
-    <ProgressSpinner animationDuration=".1s" />
+    <ProgressSpinner animationDuration="1s" />
   </div>
   <template v-else>
     <controllers-list :controllers="controllers"></controllers-list>

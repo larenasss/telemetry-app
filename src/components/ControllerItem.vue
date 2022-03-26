@@ -1,6 +1,6 @@
 <template>
   <div v-if="loading">
-    <ProgressSpinner animationDuration=".1s" />
+    <ProgressSpinner animationDuration="1s" />
   </div>
   <template v-else>
     <div v-if="isController">
@@ -21,12 +21,12 @@
                     params: {id: controller.Id},
                     query: {selectParam: ps.showValue, dateStart: $route.query.dateStart, dateEnd: $route.query.dateEnd}
                   }"
-                  custom v-slot="{navigate, isActive}">
+                  custom v-slot="{navigate}">
                   <Button
                     @click="navigate"
                     :label="ps.showValue"
                     class="p-button-link"
-                    :class="{'active-link': isActive}"/>
+                    :class="{'active-link': ps.showValue == $route.query.selectParam}"/>
                 </router-link>
               </div>
             </div>
@@ -53,7 +53,7 @@ import DateFilter from '@/components/DateFilter';
 import { useRouter, useRoute } from 'vue-router';
 import { watch } from 'vue';
 
-import { convertDateJsonToDate } from '@/helpers/dateConverter';
+import { convertDateJsonToDate } from '@/helpers/dateConverterForQuery';
 
 export default {
   props: {
@@ -105,7 +105,7 @@ export default {
     padding: .2rem;
   }
 
-  .active-link-exact {
+  .active-link {
     background: transparent;
     box-shadow: 0 0 0 0.2rem #a6d5fa;
     border-color: transparent;

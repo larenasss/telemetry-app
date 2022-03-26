@@ -26,7 +26,7 @@
 import { computed } from '@vue/reactivity';
 import { useStore } from 'vuex';
 
-import { convertDateToJson } from '@/helpers/dateConverter';
+import { convertDateToJson } from '@/helpers/dateConverterForQuery';
 
 export default {
   props: {

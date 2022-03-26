@@ -13,7 +13,7 @@
 
 <script>
 import { ref } from 'vue';
-import { convertDateToJson } from '@/helpers/dateConverter';
+import { convertDateToJson } from '@/helpers/dateConverterForQuery';
 
 export default {
   name: 'AppDateFilter',

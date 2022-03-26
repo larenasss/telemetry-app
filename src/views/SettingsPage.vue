@@ -28,6 +28,7 @@ export default {
 
       const arrayValuesChecked = [];
       const arrayValuesNonChecked = [];
+
       inputs.forEach(element => {
         const { value } = element;
         if (element.checked) {
@@ -37,9 +38,7 @@ export default {
         }
       });
 
-      if (arrayValuesNonChecked.length) {
-        setItem('hideParamsSetting', arrayValuesNonChecked);
-      }
+      setItem('hideParamsSetting', arrayValuesNonChecked);
 
       const paramsSetting = [...arrayValuesNonChecked, ...arrayValuesChecked].sort((x, y) => y - x);
 

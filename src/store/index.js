@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import { createNewArrayParams } from '@/helpers/createNewArrayParams';
+import { createArrayParamsSettingForUI } from '@/helpers/createArrayParamsSettingForUI';
 import { getItem } from '@/helpers/persistanceStorage';
 
 export const mutationsTypes = {
@@ -30,13 +30,13 @@ export const store = createStore({
   mutations: {
     [mutationsTypes.setControllers]: (state, payload) => {
         const controllers = payload.reduce((acc, messages) => {
-        const isSome = acc.some(ct => ct.Id === messages.Imei);
-        if (!isSome) {
-          const messagesForItem = payload.filter(ms => ms.Imei === messages.Imei);
+        const isExist = acc.some(ct => ct.Id === messages.Imei);
+        if (!isExist) {
+          const messagesByItem = payload.filter(ms => ms.Imei === messages.Imei);
           acc.push({
             Id: messages.Imei,
             TruckId: messages.TruckId,
-            messages: messagesForItem
+            messages: messagesByItem
           });
         }
         return acc;
@@ -45,7 +45,7 @@ export const store = createStore({
       state.loading = true;
     },
     [mutationsTypes.setParamsSetting]: (state, payload) => {
-      state.paramsSetting = createNewArrayParams(payload, [...getItem('hideParamsSetting') ?? ""]);
+      state.paramsSetting = createArrayParamsSettingForUI(payload, [...getItem('hideParamsSetting') ?? ""]);
     }
   },
   actions: {
@@ -68,7 +68,7 @@ export const store = createStore({
       return state.controllers.map(ctr => {
         return {
           Id: ctr.Id,
-          TruckId: ctr.TruckId,
+          TruckId: ctr.TruckId ?? 0,
         };
       });
     },
