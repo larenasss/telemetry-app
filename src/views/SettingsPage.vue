@@ -1,5 +1,6 @@
 <template>
   <form @submit.prevent="saveParams">
+    <h4 class="mb-3">Выбрать все: <input type="checkbox" @change="checkAll"></h4>
     <div v-for="(param, idx) in params" :key="idx">
       <span class="mr-5">{{ param.showValue }}</span>
       <input type="checkbox" name="param" :value="param.showValue" :checked="param.isShow">
@@ -11,7 +12,7 @@
 <script>
 import { useStore } from 'vuex';
 import { mutationsTypes } from '@/store';
-import { computed } from '@vue/reactivity';
+import { computed } from 'vue';
 import { setItem } from '@/helpers/persistanceStorage';
 import { useRouter } from 'vue-router';
 
@@ -20,6 +21,11 @@ export default {
   setup() {
     const store = useStore();
     const router = useRouter();
+
+    const checkAll = (event) => {
+      const inputs = document.querySelectorAll('input[name="param"]');
+      (() => inputs.forEach(el => el.checked = event.target.checked))();
+    };
 
     const saveParams = (event) => {
       const form = event.target;
@@ -49,7 +55,8 @@ export default {
 
     return {
       params: computed(() => store.state.paramsSetting),
-      saveParams
+      saveParams,
+      checkAll
     };
   }
 };
