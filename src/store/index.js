@@ -51,7 +51,7 @@ export const store = createStore({
   actions: {
     [actionsTypes.loadMessages]: async({ commit }) => {
       try {
-        const data = await fetch('/dataDB/db.json');
+        const data = await fetch('https://telemetry-app-56995-default-rtdb.firebaseio.com/.json');
         data.json().then(messages => {
           const arrayParams = Object.keys(messages[0]).map(el => el);
           commit(mutationsTypes.setParamsSetting, arrayParams);
