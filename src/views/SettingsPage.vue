@@ -1,9 +1,9 @@
 <template>
   <form @submit.prevent="saveParams">
-    <h4 class="mb-3">Выбрать все: <input type="checkbox" @change="checkAll"></h4>
+    <h4 class="mb-3">Выбрать все: <input type="checkbox" @change="setAllInputsChecked" :checked="checkAll"></h4>
     <div v-for="(param, idx) in params" :key="idx">
       <span class="mr-5">{{ param.showValue }}</span>
-      <input type="checkbox" name="param" :value="param.showValue" :checked="param.isShow">
+      <input type="checkbox" name="param" :value="param.showValue" v-model="param.isShow">
     </div>
     <Button type="submit" class="mt-3" label="Сохранить"></Button>
   </form>
@@ -22,7 +22,11 @@ export default {
     const store = useStore();
     const router = useRouter();
 
-    const checkAll = (event) => {
+    const params = computed(() => store.state.paramsSetting);
+
+    const checkAll = computed(() => params.value.every(pr => pr.isShow));
+
+    const setAllInputsChecked = (event) => {
       const inputs = document.querySelectorAll('input[name="param"]');
       (() => inputs.forEach(el => el.checked = event.target.checked))();
     };
@@ -37,6 +41,7 @@ export default {
 
       inputs.forEach(element => {
         const { value } = element;
+
         if (element.checked) {
           arrayValuesChecked.push(value);
         } else {
@@ -54,8 +59,9 @@ export default {
     };
 
     return {
-      params: computed(() => store.state.paramsSetting),
+      params,
       saveParams,
+      setAllInputsChecked,
       checkAll
     };
   }
