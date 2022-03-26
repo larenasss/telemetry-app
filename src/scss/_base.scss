@@ -5,6 +5,14 @@
     font-family: 'Roboto', sans-serif;
 }
 
+html, body, .app, .container {
+    height: 100%;
+}
+
+.wrapper {
+    min-height: calc(100% - 101px);
+}
+
 a {
     text-decoration: none;
 }
