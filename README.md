@@ -4,4 +4,4 @@
 
 Для написания использованны Webpack 5 и Vue 3.
 
-* посмотреть приложение можно по ссылке https://larenasss.github.io/telemetry-app/dist
+* посмотреть приложение можно по ссылке https://telemetry-app-56995.web.app/
