@@ -38,9 +38,8 @@ export default {
   setup() {
     const store = useStore();
 
-    const startFilterValue = new Date();
-    const endFilterValue = new Date();
-    startFilterValue.setDate(startFilterValue.getDate() - 1);
+    const startFilterValue = new Date("2022-02-22T00:01:00");
+    const endFilterValue = new Date("2022-02-24T23:59:00");
 
     const firstDefaultParam = computed(() => store.state.paramsSetting.filter(ps => ps.isShow)[0]?.showValue ?? "");
 
